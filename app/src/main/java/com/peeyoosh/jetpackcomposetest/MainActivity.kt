@@ -13,6 +13,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -87,6 +89,7 @@ fun Greeting(name: String) {
         PasswordTextField(password)
         LoginButton(username, password)
         ClearButton(username, password)
+        ShareButton()
     }
 
 }
@@ -132,6 +135,31 @@ private fun PasswordTextField(password: MutableState<String>) {
 }
 
 @Composable
+private fun LoginButton(
+    username: MutableState<String>,
+    password: MutableState<String>
+) {
+    val context = LocalContext.current
+    Button(
+        onClick = {
+            validateLogin(context, username.value, password.value)
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        elevation = ButtonDefaults.elevation(10.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Send,
+            contentDescription = "login",
+            modifier = Modifier.size(ButtonDefaults.IconSize)
+        )
+        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+        Text(text = "Login")
+    }
+}
+
+@Composable
 private fun ClearButton(
     username: MutableState<String>,
     password: MutableState<String>
@@ -150,23 +178,26 @@ private fun ClearButton(
 }
 
 @Composable
-private fun LoginButton(
-    username: MutableState<String>,
-    password: MutableState<String>
+private fun ShareButton(
 ) {
     val context = LocalContext.current
-    OutlinedButton(
+    TextButton(
         onClick = {
-            validateLogin(context, username.value, password.value)
+            Toast.makeText(context, "content will be shared.", Toast.LENGTH_SHORT).show()
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(start = 10.dp, end = 10.dp)
     ) {
-        Text(text = "Login")
+        Icon(
+            imageVector = Icons.Default.Share,
+            contentDescription = "share",
+            modifier = Modifier.size(ButtonDefaults.IconSize)
+        )
+        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+        Text(text = "Share")
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
